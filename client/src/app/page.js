@@ -9,11 +9,14 @@ import React from 'react';
 // 1. MAIN PAGE COMPONENT
 // This is the main component that assembles all other sections.
 // ====================================================================
+// client/src/app/page.js -> HomePage component එක
+
 export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#070911] text-white antialiased">
       <Header />
-      <main className="flex-grow pt-20">
+      {/* THE FIX IS HERE: We adjust the top padding of the main content area */}
+      <main className="flex-grow pt-[40px]"> {/* Changed from pt-20 to a specific pixel value */}
         <HeroSection />
         <FeatureGrid />
         <HowItWorksSection />
@@ -31,27 +34,38 @@ export default function HomePage() {
 // We define all the building blocks of our page here for clarity.
 // ====================================================================
 
+// client/src/app/page.js -> Header component එක
+
 const Header = () => (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#070911]/80 backdrop-blur-sm">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-            <Link href="/" className="text-2xl font-bold">
-                Link<span className="text-blue-500">Hub</span>
-            </Link>
-            <nav className="hidden md:flex items-center gap-8">
-                <Link href="#features" className="text-slate-300 hover:text-white transition-colors">Features</Link>
-                <Link href="#pricing" className="text-slate-300 hover:text-white transition-colors">Pricing</Link>
+    // Main header tag: This will span the full width
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-gradient-to-b from-slate-950/80 to-slate-950/20 backdrop-blur-lg">
+        {/* Container: This will center the content */}
+        <div className="container mx-auto px-6">
+            <nav className="flex justify-between items-center py-4">
+                {/* Logo */}
+                <Link href="/" className="text-2xl font-bold">
+                    Link<span className="text-blue-500">Hub</span>
+                </Link>
+
+                {/* Navigation Links (Center) */}
+                <div className="hidden md:flex items-center gap-8">
+                    <Link href="#features" className="text-slate-300 hover:text-white transition-colors">Features</Link>
+                    <Link href="#pricing" className="text-slate-300 hover:text-white transition-colors">Pricing</Link>
+                </div>
+                
+                {/* Action Buttons (Right) */}
+                <div className="flex items-center gap-4">
+                    <Link href="/login" className="text-slate-300 hover:text-white transition-colors text-sm font-medium">
+                        Sign In
+                    </Link>
+                    <Link
+                        href="/register"
+                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
+                    >
+                        Get Started
+                    </Link>
+                </div>
             </nav>
-            <div className="flex items-center gap-4">
-                <Link href="/login" className="text-slate-300 hover:text-white transition-colors text-sm font-medium">
-                Sign In
-                </Link>
-                <Link
-                href="/register"
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
-                >
-                Get Started
-                </Link>
-            </div>
         </div>
     </header>
 );
