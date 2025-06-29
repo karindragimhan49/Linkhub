@@ -1,26 +1,36 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', sans-serif;
+  @apply bg-[#0B0F19] text-slate-300; /* Main background and text color */
+}
+
+
+/* --- Subtle Aurora Background for Hero --- */
+.aurora-background {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%; /* Make it larger than the container */
+  height: 120%;
+  background-image: 
+    radial-gradient(ellipse 40% 40% at 20% 30%, hsla(217, 100%, 50%, 0.15), transparent),
+    radial-gradient(ellipse 40% 40% at 80% 70%, hsla(190, 100%, 50%, 0.15), transparent);
+  -webkit-filter: blur(100px);
+  filter: blur(100px);
+  z-index: 0;
+  pointer-events: none;
+  animation: aurora-movement 15s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-movement {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  100% {
+    transform: translate(-45%, -55%) rotate(10deg) scale(1.1);
+  }
 }
