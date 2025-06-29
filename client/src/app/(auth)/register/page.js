@@ -2,15 +2,31 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const { register } = useAuth();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({ name, email, password });
+        if (!name || !email || !password) {
+            return toast.error("Please fill in all fields.");
+        }
+        setIsLoading(true);
+        try {
+            await register(name, email, password);
+            toast.success('Account created successfully!');
+            // The redirection to /dashboard is handled inside the register function
+        } catch (err) {
+            toast.error(err.response?.data?.message || 'Registration failed. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -31,6 +47,7 @@ export default function RegisterPage() {
                     placeholder="Full Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    disabled={isLoading}
                 />
                 <input
                     type="email"
@@ -40,6 +57,7 @@ export default function RegisterPage() {
                     placeholder="Email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    disabled={isLoading}
                 />
                 <input
                     type="password"
@@ -48,12 +66,14 @@ export default function RegisterPage() {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    disabled={isLoading}
                 />
                 <button
                     type="submit"
-                    className="w-full py-3 px-4 text-sm font-semibold rounded-lg text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 focus:ring-offset-slate-900 transition-all transform hover:scale-105"
+                    disabled={isLoading}
+                    className="w-full py-3 px-4 text-sm font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 transition-all transform hover:scale-105 disabled:bg-blue-800 disabled:scale-100 disabled:cursor-not-allowed"
                 >
-                    Create Account
+                    {isLoading ? 'Creating Account...' : 'Create Account'}
                 </button>
             </form>
         </div>
