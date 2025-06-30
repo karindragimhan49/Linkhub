@@ -9,7 +9,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true); // Start with loading true
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
 
     const loadUserFromToken = async () => {
@@ -34,21 +34,31 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (email, password) => {
-        const res = await API.post('/auth/login', { email, password });
-        const { token, ...userData } = res.data;
-        localStorage.setItem('linkhub-token', token);
-        API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        setUser(userData);
-        router.push('/dashboard');
+        try {
+            const res = await API.post('/auth/login', { email, password });
+            const { token, ...userData } = res.data;
+            localStorage.setItem('linkhub-token', token);
+            API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            setUser(userData);
+            router.push('/dashboard');
+            return res.data; // Return data on success
+        } catch (error) {
+            throw error.response?.data || new Error('Login failed');
+        }
     };
 
     const register = async (name, email, password) => {
-        const res = await API.post('/auth/register', { name, email, password });
-        const { token, ...userData } = res.data;
-        localStorage.setItem('linkhub-token', token);
-        API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        setUser(userData);
-        router.push('/dashboard');
+        try {
+            const res = await API.post('/auth/register', { name, email, password });
+            const { token, ...userData } = res.data;
+            localStorage.setItem('linkhub-token', token);
+            API.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            setUser(userData);
+            router.push('/dashboard');
+            return res.data; // Return data on success
+        } catch (error) {
+            throw error.response?.data || new Error('Registration failed');
+        }
     };
 
     const logout = () => {

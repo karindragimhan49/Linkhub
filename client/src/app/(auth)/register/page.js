@@ -1,31 +1,34 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { useAuth } from '@/contexts/AuthContext';
 import toast from 'react-hot-toast';
 
-export default function RegisterPage() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const { register } = useAuth();
+// 1. Define the validation schema with Zod
+const registerSchema = z.object({
+  name: z.string().min(3, { message: "Name must be at least 3 characters long." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters long." }),
+});
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!name || !email || !password) {
-            return toast.error("Please fill in all fields.");
-        }
-        setIsLoading(true);
+export default function RegisterPage() {
+    const { register: registerUser, loading } = useAuth(); // renamed to avoid conflict
+
+    // 2. Setup react-hook-form
+    const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
+        resolver: zodResolver(registerSchema),
+    });
+
+    // 3. Handle form submission
+    const onSubmit = async (data) => {
         try {
-            await register(name, email, password);
-            toast.success('Account created successfully!');
-            // The redirection to /dashboard is handled inside the register function
+            await registerUser(data.name, data.email, data.password);
+            toast.success('Account created successfully! Redirecting...');
         } catch (err) {
-            toast.error(err.response?.data?.message || 'Registration failed. Please try again.');
-        } finally {
-            setIsLoading(false);
+            toast.error(err.message || 'Registration failed. Please try again.');
         }
     };
 
@@ -39,41 +42,41 @@ export default function RegisterPage() {
                 </Link>
             </p>
             
-            <form onSubmit={handleSubmit} className="mt-8 w-full space-y-4">
-                <input
-                    type="text"
-                    required
-                    className="w-full p-3 bg-slate-900/50 text-white rounded-lg border border-slate-700 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all"
-                    placeholder="Full Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    disabled={isLoading}
-                />
-                <input
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="w-full p-3 bg-slate-900/50 text-white rounded-lg border border-slate-700 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all"
-                    placeholder="Email address"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={isLoading}
-                />
-                <input
-                    type="password"
-                    required
-                    className="w-full p-3 bg-slate-900/50 text-white rounded-lg border border-slate-700 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={isLoading}
-                />
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-8 w-full space-y-4">
+                <div>
+                    <input
+                        {...register("name")}
+                        type="text"
+                        placeholder="Full Name"
+                        className={`w-full p-3 bg-slate-900/50 text-white rounded-lg border placeholder-slate-500 focus:outline-none focus:ring-2 transition-all ${errors.name ? 'border-red-500 ring-red-500' : 'border-slate-700 focus:ring-sky-500'}`}
+                    />
+                    {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+                </div>
+                <div>
+                    <input
+                        {...register("email")}
+                        type="email"
+                        placeholder="Email address"
+                        className={`w-full p-3 bg-slate-900/50 text-white rounded-lg border placeholder-slate-500 focus:outline-none focus:ring-2 transition-all ${errors.email ? 'border-red-500 ring-red-500' : 'border-slate-700 focus:ring-sky-500'}`}
+                    />
+                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                </div>
+                <div>
+                    <input
+                        {...register("password")}
+                        type="password"
+                        placeholder="Password"
+                        className={`w-full p-3 bg-slate-900/50 text-white rounded-lg border placeholder-slate-500 focus:outline-none focus:ring-2 transition-all ${errors.password ? 'border-red-500 ring-red-500' : 'border-slate-700 focus:ring-sky-500'}`}
+                    />
+                    {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+                </div>
+
                 <button
                     type="submit"
-                    disabled={isLoading}
-                    className="w-full py-3 px-4 text-sm font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 transition-all transform hover:scale-105 disabled:bg-blue-800 disabled:scale-100 disabled:cursor-not-allowed"
+                    disabled={isSubmitting}
+                    className="w-full py-3 px-4 text-sm font-semibold rounded-lg text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 focus:ring-offset-slate-900 transition-all transform hover:scale-105 disabled:bg-sky-800 disabled:scale-100 disabled:cursor-not-allowed"
                 >
-                    {isLoading ? 'Creating Account...' : 'Create Account'}
+                    {isSubmitting ? 'Creating Account...' : 'Create Account'}
                 </button>
             </form>
         </div>

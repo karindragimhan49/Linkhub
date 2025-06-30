@@ -4,6 +4,7 @@ const LinkSchema = new mongoose.Schema({
     url: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String },
+    image: { type: String },
     category: { type: String, default: 'General' },
     tags: [{ type: String }],
 }, { timestamps: true });
