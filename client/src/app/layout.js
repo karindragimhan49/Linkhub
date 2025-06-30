@@ -13,14 +13,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
-      <AuthProvider>
-        <body className={`${inter.className} relative`}>
+      <body className={`${inter.className} relative`}>
+        <AuthProvider>
           <ParticlesBackground />
           <div className="relative z-10">
             {children}
           </div>
-        </body>
-      </AuthProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 }
