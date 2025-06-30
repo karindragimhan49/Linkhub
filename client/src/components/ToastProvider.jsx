@@ -1,24 +1,19 @@
-// client/src/components/ToastProvider.jsx
-
 'use client';
-
 import { Toaster } from 'react-hot-toast';
 
 const ToastProvider = () => {
-  return (
-    <Toaster
-      position="top-center"
-      reverseOrder={false}
-      toastOptions={{
-        duration: 3000,
-        style: {
-          background: '#1e293b', // bg-slate-800
-          color: '#f1f5f9',     // text-slate-100
-          border: '1px solid #334155', // border-slate-700
-        },
-      }}
-    />
-  );
+    return (
+        <Toaster
+            position="top-center"
+            reverseOrder={false}
+            toastOptions={{
+                style: {
+                    background: '#334155', // bg-slate-700
+                    color: '#F1F5F9',     // text-slate-100
+                },
+            }}
+        />
+    );
 };
 
 export default ToastProvider;

@@ -1,26 +1,19 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/contexts/AuthContext"; 
-import ToastProvider from "@/components/ToastProvider";
-import ParticlesBackground from "@/components/ui/ParticlesBackground";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "LinkHub - Your Digital Link Sanctuary",
-  description: "Organize, search, and manage all your important links in one place.",
-};
+export const metadata = { /* ... */ };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} relative`}>
-        <ToastProvider />
+      <body className={inter.className}>
         <AuthProvider>
-          <ParticlesBackground />
-          <div className="relative z-10">
-            {children}
-          </div>
+          <Toaster position="top-center" toastOptions={{ style: { background: '#334155', color: '#F1F5F9' } }} />
+          {children}
         </AuthProvider>
       </body>
     </html>
