@@ -34,3 +34,30 @@ body {
     transform: translate(-45%, -55%) rotate(10deg) scale(1.1);
   }
 }
+@keyframes subtle-breathing {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #02040a; /* A deeper, richer black */
+  background-image: linear-gradient(135deg, #02040a 0%, #0b1120 50%, #02040a 100%);
+  background-size: 200% 200%;
+  animation: subtle-breathing 20s ease-in-out infinite;
+}
+/* In globals.css */
+.my-masonry-grid {
+  display: flex;
+  margin-left: -24px; /* gutter size offset */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 24px; /* gutter size */
+  background-clip: padding-box;
+}
+
+/* Style your items */
+.my-masonry-grid_column > div { /* LinkCard wrapper */
+  margin-bottom: 24px;
+}

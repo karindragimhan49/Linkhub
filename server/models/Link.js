@@ -7,5 +7,6 @@ const LinkSchema = new mongoose.Schema({
     image: { type: String },
     category: { type: String, default: 'General' },
     tags: [{ type: String }],
+    project: { type: String, default: 'General' }, // <-- THE FIX IS HERE! ADD THIS LINE
 }, { timestamps: true });
 module.exports = mongoose.models.Link || mongoose.model('Link', LinkSchema);
