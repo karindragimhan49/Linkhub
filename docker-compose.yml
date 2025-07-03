@@ -1,0 +1,38 @@
+# We are using version 3.8 of the Docker Compose file format
+version: '3.8'
+
+# 'services' is where we define our containers
+services:
+  # --- The Backend Service ---
+  server:
+    # Tells Docker Compose to build the image from the './server' directory
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    # A friendly name for our container
+    container_name: linkhub-backend
+    # Always restart the container if it stops, unless we stop it manually
+    restart: unless-stopped
+    # Map port 5000 on our computer to port 5000 inside the container
+    ports:
+      - "5000:5000"
+    # Pass environment variables from a .env file to the container
+    env_file:
+      - ./server/.env # Use the .env file inside the server folder
+
+  # --- The Frontend Service ---
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: linkhub-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    # This is important: it tells the frontend to wait until the server is ready before starting
+    depends_on:
+      - server
+    # We need to tell the Next.js app where to find the backend API inside the Docker network
+    environment:
+      # This will be the address for our backend service
+      NEXT_PUBLIC_API_URL: http://server:5000/api

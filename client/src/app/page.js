@@ -231,8 +231,9 @@ const TestimonialSection = () => {
                 <div className="bg-transparent border border-slate-800 rounded-2xl p-8 md:p-12 text-center">
                     <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User Testimonial" className="w-20 h-20 rounded-full mx-auto mb-6 border-4 border-slate-700" />
                     <blockquote className="text-xl md:text-2xl font-medium text-white leading-relaxed">
-                        "LinkHub has completely changed how I manage my learning resources. The AI tagging is a game-changer. I'm saving hours every week. I can't imagine my workflow without it now."
+                        &quot;LinkHub has completely changed how I manage my learning resources. The AI tagging is a game-changer. I'm saving hours every week. I can't imagine my workflow without it now.&quot;
                     </blockquote>
+                    
                     <cite className="block mt-6 not-italic">
                         <span className="font-semibold text-slate-200">Sarah Dole</span>
                         <br/>
