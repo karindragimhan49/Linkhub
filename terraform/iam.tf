@@ -59,3 +59,29 @@ resource "aws_ecs_service" "main" {
     Name = "${var.app_name}-service"
   }
 }
+# --- New IAM Policy for SSM Parameter Access ---
+resource "aws_iam_policy" "ssm_policy" {
+  name        = "${var.app_name}-ssm-read-policy"
+  description = "Allows ECS tasks to read from SSM Parameter Store"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "ssm:GetParameters"
+        ],
+        Resource = [
+          aws_ssm_parameter.mongo_uri.arn
+        ]
+      }
+    ]
+  })
+}
+
+# --- Attach the new policy to our existing role ---
+resource "aws_iam_role_policy_attachment" "ecs_ssm_policy_attachment" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = aws_iam_policy.ssm_policy.arn
+}
