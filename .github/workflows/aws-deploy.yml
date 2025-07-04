@@ -1,0 +1,60 @@
+name: Deploy LinkHub to AWS ECS
+
+on:
+  push:
+    branches: [ "main" ] # Run only when code is pushed to the main branch
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  ECR_SERVER_REPOSITORY: linkhub-server # Must match the name in ecr.tf
+  ECR_CLIENT_REPOSITORY: linkhub-client # Must match the name in ecr.tf
+  ECS_CLUSTER_NAME: linkhub-cluster       # Must match the name in ecs.tf
+  ECS_SERVICE_NAME: linkhub-service       # Must match the name in ecs.tf
+  ECS_TASK_DEFINITION: linkhub-task       # Must match the family name in ecs.tf
+  CONTAINER_SERVER_NAME: linkhub-server   # Must match the container name in ecs.tf
+  CONTAINER_CLIENT_NAME: linkhub-client   # Must match the container name in ecs.tf
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Required for AWS OIDC authentication
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, Tag, and Push Server Image to ECR
+        run: |
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_SERVER_REPOSITORY }}:latest ./server
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_SERVER_REPOSITORY }}:latest
+
+      - name: Build, Tag, and Push Client Image to ECR
+        run: |
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_CLIENT_REPOSITORY }}:latest ./client
+          docker push ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_CLIENT_REPOSITORY }}:latest
+          
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION }} --query taskDefinition > task-definition.json
+
+      - name: Deploy new task definition to ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          service: ${{ env.ECS_SERVICE_NAME }}
+          cluster: ${{ env.ECS_CLUSTER_NAME }}
+          wait-for-service-stability: true
