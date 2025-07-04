@@ -110,11 +110,11 @@ const HeroSection = () => (
         className="mt-10"
       >
         <Link
-          href="/register"
-          className="bg-white text-slate-900 px-8 py-3 rounded-md font-semibold text-lg hover:bg-slate-200 transition-colors transform hover:scale-105 inline-flex items-center gap-2"
-        >
-          Get Started - It's Free <ArrowRight className="w-5 h-5" />
-        </Link>
+  href="/register"
+  className="inline-flex items-center gap-2 px-8 py-3 rounded-md font-semibold text-lg text-white bg-gradient-to-r from-[#0c4b34] to-emerald-600 hover:from-[#073222] hover:to-emerald-800 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+>
+  Get Started – It's Free <ArrowRight className="w-5 h-5" />
+</Link>
       </motion.div>
     </div>
   </section>
