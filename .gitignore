@@ -137,3 +137,23 @@ dist
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+.terraform
+# Terraform directories
+.terraform.lock.hcl     
+# Local .terraform directories
+.terraform.d
+
+# Local .terraform directories
+.terraform.d/                           
+
+
+# Local .terraform directories
+.terraform.d/plugins/                       
+
+                    
+                    # Terraform-specific ignores
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
