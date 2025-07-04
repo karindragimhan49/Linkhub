@@ -77,16 +77,16 @@ resource "aws_security_group" "ecs_sg" {
   description = "Allow inbound traffic for ECS tasks"
   vpc_id      = aws_vpc.main.id
 
-    # --- THE FIX IS HERE ---
+ # --- THE FIX IS HERE ---
   # Rule 1: Allow inbound HTTP traffic from anywhere on port 80 (for the Load Balancer)
   ingress {
     protocol    = "tcp"
     from_port   = 80
     to_port     = 80
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow HTTP traffic for ALB"
   }
-  # --
-
+  
   # Allow inbound HTTP traffic from anywhere on port 3000 (for our frontend)
   ingress {
     from_port   = 3000
