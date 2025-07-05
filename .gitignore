@@ -152,7 +152,7 @@ vite.config.ts.timestamp-*
 .terraform.d/plugins/                       
 
                     
-                    # Terraform-specific ignores
+                    # Terraform-specific ignoresw
 .terraform/
 *.tfstate
 *.tfstate.*
