@@ -1,7 +1,7 @@
 # LinkHub: A Full-Stack MERN Application with an End-to-End Serverless CI/CD Pipeline on AWS
 
 <p align="center">
-  <img src="https://github.com/karindragimhan49/Linkhub/blob/e1672683ca0f0b3d598312cf8819cd4a00903068/snap/ui.jpg" alt="LinkHub Dashboard" width="80%">
+  <img src="https://github.com/karindragimhan49/Linkhub/blob/c8b06156235913e83a0d913e1c322c0ea0ee9000/snap/ui.png" alt="LinkHub Dashboard" width="80%">
 </p>
 
 This repository contains the source code for **LinkHub**, a modern, full-stack link management application, and the complete infrastructure code to deploy it on AWS using a fully automated, serverless CI/CD pipeline.
@@ -25,7 +25,7 @@ The primary goal of this project was to build a real-world application while imp
 This project utilizes a modern, cloud-native architecture that separates the application from the infrastructure, ensuring scalability, security, and maintainability.
 
 <p align="center">
-  <img src="YOUR_ARCHITECTURE_DIAGRAM_URL_HERE" alt="Solution Architecture">
+  <img src="https://github.com/karindragimhan49/Linkhub/blob/c8b06156235913e83a0d913e1c322c0ea0ee9000/snap/architecture.png" alt="Solution Architecture">
 </p>
 
 **The workflow is as follows:**
@@ -38,6 +38,12 @@ This project utilizes a modern, cloud-native architecture that separates the app
 6.  **Infrastructure as Code (IaC):** The entire AWS environment—including the VPC, Subnets, Security Groups, ECR repositories, ECS Cluster, Task Definition, and Application Load Balancer—is defined and managed as code using **Terraform**.
 
 ---
+
+## ✨ Cloud Watch in Aws
+
+<p align="center">
+  <img src="https://github.com/karindragimhan49/Linkhub/blob/c8b06156235913e83a0d913e1c322c0ea0ee9000/snap/cloud%20watch.png" alt="CloudWorkflow">
+</p>
 
 ## 🛠️ Tech Stack & Tools
 
@@ -58,10 +64,11 @@ This project utilizes a modern, cloud-native architecture that separates the app
 
 ---
 
+
 ## ✨ CI/CD Pipeline in Action
 
 <p align="center">
-  <img src="YOUR_GITHUB_ACTIONS_SCREENSHOT_URL_HERE" alt="GitHub Actions Workflow">
+  <img src="https://github.com/karindragimhan49/Linkhub/blob/c8b06156235913e83a0d913e1c322c0ea0ee9000/snap/GithubAction.png" alt="GitHub Actions Workflow">
 </p>
 
 The automated pipeline handles every step, from building the containers to deploying them in a highly available and scalable environment, ensuring rapid and reliable delivery of new features.
