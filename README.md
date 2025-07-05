@@ -1,7 +1,7 @@
 # LinkHub: A Full-Stack MERN Application with an End-to-End Serverless CI/CD Pipeline on AWS
 
 <p align="center">
-  <img src="YOUR_UI_SCREENSHOT_URL_HERE" alt="LinkHub Dashboard" width="80%">
+  <img src="https://github.com/karindragimhan49/Linkhub/blob/e1672683ca0f0b3d598312cf8819cd4a00903068/snap/ui.jpg" alt="LinkHub Dashboard" width="80%">
 </p>
 
 This repository contains the source code for **LinkHub**, a modern, full-stack link management application, and the complete infrastructure code to deploy it on AWS using a fully automated, serverless CI/CD pipeline.
